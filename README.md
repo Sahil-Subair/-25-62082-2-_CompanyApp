@@ -14,6 +14,43 @@
 5. **Form File Decoupling:** To stop Visual Studio from breaking the Form Designer, I followed the Three-File Rule when bringing over `frmEmployee`, copying the `.cs`, `.Designer.cs`, and `.resx` files together.
 6. **Relational Link:** Linked employee records directly to user accounts by adding a `CreatedBy` foreign key in the employee table that points to `Users(UserID)`.
 
+## Schema.sql
+CREATE DATABASE dbCompanyApp;
+
+GO
+
+USE dbCompanyApp;
+
+GO
+
+CREATE TABLE dbo.Users
+
+(
+    UserID INT IDENTITY(1,1) PRIMARY KEY,
+    Username NVARCHAR(50) NOT NULL UNIQUE,
+    PasswordHash NVARCHAR(200) NOT NULL,
+    Email NVARCHAR(100) NULL,
+    FullName NVARCHAR(100) NULL,
+    CreatedAt DATETIME DEFAULT GETDATE()
+);
+
+GO
+
+CREATE TABLE dbo.Emp_details 
+
+(
+    EmpId NVARCHAR(50) PRIMARY KEY,
+    EmpName NVARCHAR(100) NOT NULL,
+    EmpAge INT NOT NULL,
+    EmpContact NVARCHAR(20) NULL,
+    EmpGender NVARCHAR(10) NULL,
+    CreatedBy INT NULL,
+    CONSTRAINT FK_Emp_CreatedBy FOREIGN KEY (CreatedBy) REFERENCES dbo.Users(UserID)
+);
+
+GO
+
+
 ---
 
 ## Database Architecture & Migration
@@ -75,7 +112,21 @@ Merging two separate databases into a single SQL Server LocalDB setup makes the 
 ## Submission Screenshots Checklist
 The submission package includes visual verification for:
 1. **Object Explorer:** Both `Users` and `Emp_details` tables listed under `dbCompanyApp`.
+   <img width="1920" height="1046" alt="1" src="https://github.com/user-attachments/assets/43385c76-9f43-4d77-9c9a-003598025077" />
+
 2. **Users Data View:** Rows of user data inside the table editor.
+   <img width="1920" height="1039" alt="2" src="https://github.com/user-attachments/assets/73758063-bc8b-498a-9928-5cc35ef5e4da" />
+
 3. **Solution Explorer:** The nested three-file layout (`.cs`, `.Designer.cs`, `.resx`) for `frmEmployee`.
+   <img width="1920" height="1042" alt="3" src="https://github.com/user-attachments/assets/5d24049f-31bb-43be-94d8-07f7d57ab0ce" />
+
 4. **App Flow:** Step-by-step screenshots from `LoginForm` to `HomeForm` to `frmEmployee`.
+   <img width="828" height="487" alt="4" src="https://github.com/user-attachments/assets/f7dda13f-e4b9-400a-9973-734fb688ddcf" />
+
+   <img width="938" height="449" alt="5" src="https://github.com/user-attachments/assets/8a47ae1c-4576-456f-a430-efb649b20078" />
+
+   <img width="1268" height="631" alt="6" src="https://github.com/user-attachments/assets/2412d286-e6c9-4346-b1e9-d0d363f9939e" />
+
 5. **Data Grid Audit:** The employee table showing record creators populated via `LEFT JOIN`.
+   <img width="1190" height="779" alt="7" src="https://github.com/user-attachments/assets/b5cace22-8ab9-4390-b4b2-dcbc9e0a75e1" />
+
